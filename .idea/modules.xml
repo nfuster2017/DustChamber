@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/DustChamber.iml" filepath="$PROJECT_DIR$/.idea/DustChamber.iml" />
+      <module fileurl="file://C:/RPi.GPIO-0.6.3/.idea/RPi.GPIO-0.6.3.iml" filepath="C:/RPi.GPIO-0.6.3/.idea/RPi.GPIO-0.6.3.iml" />
+    </modules>
+  </component>
+</project>
