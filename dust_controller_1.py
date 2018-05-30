@@ -65,7 +65,7 @@ def update_timeText():
 
 
 # Tkinter main program
-
+myvar=Tkinter.Label(root,image = tkimage, text = time_string, compound = Tkinter.CENTER)
 
 # Tkinter main loop
 window.mainloop()
