@@ -57,17 +57,10 @@ set_time.grid (row=2, column=0)
 
 # Functions
 
-def update_timeText():
-    current = time.strftime("%H:%M:%S")
-    timeText.configure(text=current)
-    root.after(1000, update_timeText)
-
 
 
 # Tkinter main program
-tkimage = ImageTk.PhotoImage(im)
-time_string = time.strftime('%H:%M:%S')
-myvar=tk.Label(window, text = time_string, compound = tk.CENTER)
+
 
 # Tkinter main loop
 window.mainloop()

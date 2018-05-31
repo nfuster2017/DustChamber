@@ -33,14 +33,13 @@ def init():
     GPIO.output (fan1, 0)
     GPIO.output (fan2, 0)
     GPIO.output (fan3, 0)
-    #time.sleep(5)
+    time.sleep(5)
 
 
 def fan_cycle():
     GPIO_config()
     cycle = 0
-    for i in range(100):
-        #print (cycle)
+    for i in range(100000000000000000000000000000000000000000000000):
         GPIO.output (fan3,1)
         time.sleep (10)
         GPIO.output (fan3,0)
