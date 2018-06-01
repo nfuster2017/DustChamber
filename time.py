@@ -5,11 +5,11 @@ def test_time():
     hrs=10
     mins=10
     start_time=dt.datetime.now()
-    tdelta=dt.timedelta(hours=hrs,minutes=mins)
+    tdelta=dt.timedelta(hours=hrs,minutes=mins,seconds=0)
     end_time=start_time + tdelta
     return end_time,tdelta
 
-tdelta=dt.timedelta(hours=10,minutes=10)
+tdelta=dt.timedelta(hours=10,minutes=10,seconds=10)
 
 test_time()
 print(tdelta)
