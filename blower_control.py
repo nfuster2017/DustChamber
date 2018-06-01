@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 def Conditions_met():
     #if current is right t+1
     #if current is right on vacuum t+1
-    #if x=5 all conditions met return x=True 
+    #if x=5 all conditions met return x=True
 
 def Fan_sequence(x):
     if x == True:
