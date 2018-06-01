@@ -19,7 +19,7 @@ class Timer(Frame):
         self._setTime(self._elapsedtime)
         l.pack(fill=X, expand=NO, pady=2, padx=2)
     def _update(self):
-        testing_time=10
+        testing_time=
         self._elapsedtime = testing_time - (time.time() - self._start)
         self._setTime(self._elapsedtime)
         self._timer = self.after(50, self._update)

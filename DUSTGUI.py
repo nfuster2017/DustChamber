@@ -1,5 +1,7 @@
 import tkinter as tk
 from timerfunction import *
+import RPi.GPIO as GPIO
+
 class App():
     def __init__(self):
         self.root = tk.Tk()
@@ -10,6 +12,7 @@ class App():
         self.root.configure(background='black')
         sw = Timer(self.root)
         sw.pack(side=TOP)
+        Entry(self.root).pack(side=LEFT)
         Button(self.root, text='Start', command=sw.Start).pack(side=LEFT)
         Button(self.root, text='Stop', command=sw.Stop).pack(side=LEFT)
         Button(self.root, text='Reset', command=sw.Reset).pack(side=LEFT)
