@@ -1,6 +1,8 @@
 from tkinter import *
 import time
 class Timer(Frame):
+    alarm= False
+
     def __init__(self, parent=None, **kw):
         Frame.__init__(self, parent, kw)
         self._start = 0
@@ -19,16 +21,20 @@ class Timer(Frame):
         self._setTime(self._elapsedtime)
         l.pack(fill=X, expand=NO, pady=2, padx=2)
     def _update(self):
-        testing_time=
+        testing_time=10
         self._elapsedtime = testing_time - (time.time() - self._start)
         self._setTime(self._elapsedtime)
         self._timer = self.after(50, self._update)
     def _setTime(self, elapsed):
         if self._elapsedtime>=0:
+            global alarm
             hours= int(elapsed/3600)
-            minutes = int(elapsed / 60)
-            seconds = int(elapsed - minutes * 60)
+            minutes = int(elapsed / 60)-(hours*60)
+            seconds = int(elapsed - int(elapsed / 60) * 60)
+            if hours==0 and minutes==0 and seconds== 0:
+                alarm= True
             self.timestr.set('%02d:%02d:%02d' % (hours,minutes, seconds))
+            return alarm
     def Start(self):
         if not self._running:
             self._start = time.time() - self._elapsedtime
