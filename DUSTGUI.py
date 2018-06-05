@@ -40,9 +40,9 @@ class App():
         GPIO.setup(40, GPIO.OUT)
         GPIO.setup(41, GPIO.OUT)
         GPIO.output(40, 1)
-        time.sleep(60 * 6)
+        time.sleep(1)
         GPIO.output(41, 1)
-        time.sleep(60 * 5)
+        time.sleep(1)
 
 
 App()

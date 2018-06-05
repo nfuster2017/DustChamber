@@ -10,11 +10,11 @@ class Timer(Frame):
         self._running = False
         self.timestr = StringVar()
         self.makeWidgets()
-    def _setTime(self, elapsed):
+    '''def _setTime(self, elapsed):
         minutes = int(elapsed / 60)
         seconds = int(elapsed - minutes * 60)
         hundredths = int((elapsed - ((minutes * 60) + seconds)) * 100)
-        self.timestr.set('%02d:%02d.%02d' % (minutes, seconds, hundredths))
+        self.timestr.set('%02d:%02d.%02d' % (minutes, seconds, hundredths))'''
     def makeWidgets(self):
         l = Label(self, textvariable=self.timestr, fg='green', bg='black', width=10, height=2)
         l.config(font=('Courier', 32))
@@ -30,7 +30,7 @@ class Timer(Frame):
             global alarm
             hours= int(elapsed/3600)
             minutes = int(elapsed / 60)-(hours*60)
-            seconds = int(elapsed - int(elapsed / 60) * 60)
+            seconds = int(elapsed  - int(elapsed / 60) * 60)
             if hours==0 and minutes==0 and seconds== 0:
                 alarm= True
             self.timestr.set('%02d:%02d:%02d' % (hours,minutes, seconds))
