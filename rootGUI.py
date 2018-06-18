@@ -20,6 +20,8 @@ light=False
 tot= False
 vacuum= False
 alarm= False
+
+#v=int()
 #GPIO configuration
 
 GPIO.setwarnings(False)
@@ -54,37 +56,40 @@ def warm_ups(event):
 warmup_button=Button(root, text='Commence Warm up')
 warmup_button.pack()
 warmup_button.bind('<Double-Button-1>', warm_ups)
-sw = Timer(root)
 
 
 
 clock()
-sw.pack(side=TOP)
-hr_label = tk.Label(text="Hours:").pack(side=LEFT)
-hrs_entry=Entry(root)
-hrs_entry.pack(side=LEFT)
-min_label = tk.Label(text="Mins:").pack(side=LEFT)
-min_entry=Entry(root)
-min_entry.pack(side=LEFT)
-def get_test_time(h_entry,m_entry):
 
-    hrs_content =h_entry.get()
-    min_content =m_entry.get()
+
+def get_test_time(event):
+    hr_label = tk.Label(text="Hours:").pack(side=LEFT)
+    hrs_entry = Entry(root)
+    hrs_entry.pack(side=LEFT)
+    min_label = tk.Label(text="Mins:").pack(side=LEFT)
+    min_entry = Entry(root)
+    min_entry.pack(side=LEFT)
+    hrs_content =hrs_entry.get()
+    min_content =min_entry.get()
+    print(hrs_content,min_content)
     #test_time=(hrs_content,min_content)
     #return test_time
-    return hrs_content,min_content
-submitBtn = ttk.Button(root, text='Submit')
-submitBtn.bind('<Button-1>', get_test_time(hrs_entry,min_entry))
-submitBtn.pack(side=LEFT)
+    #return hrs_content,min_content
+#Timer.testing_time=(hrs_entry*3600)+(min_entry*60)
 
+sw = Timer(root)
+submitBtn = ttk.Button(root, text='Submit')
+submitBtn.bind('<Button-1>', get_test_time)
+submitBtn.pack(side=LEFT)
+sw.pack(side=TOP)
 
 
 Button(root, text='Start', command=sw.Start).pack(side=LEFT)
 Button(root, text='Stop', command=sw.Stop).pack(side=LEFT)
 Button(root, text='Reset', command=sw.Reset).pack(side=LEFT)
 Button(root, text='Quit', command=root.quit).pack(side=RIGHT)
-if Timer.alarm== True:
-    label = tk.Label(text="ALARM ALARM").pack()
+'''if Timer.alarm== True:
+    label = tk.Label(text="ALARM ALARM").pack()'''
 
 root.mainloop()
 

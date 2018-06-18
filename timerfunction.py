@@ -1,10 +1,15 @@
 from tkinter import *
 import time
+global test_time, alarm
+test_time=90
+alarm= False
 class Timer(Frame):
-    alarm= False
+
 
     def __init__(self, parent=None, **kw):
+        self.testing_time = test_time
         Frame.__init__(self, parent, kw)
+        alarm=False
         self._start = 0
         self._elapsedtime = 0
         self._running = False
@@ -21,8 +26,8 @@ class Timer(Frame):
         self._setTime(self._elapsedtime)
         l.pack(fill=X, expand=NO, pady=2, padx=2)
     def _update(self):
-        testing_time=10
-        self._elapsedtime = testing_time - (time.time() - self._start)
+
+        self._elapsedtime = self.testing_time - (time.time() - self._start)
         self._setTime(self._elapsedtime)
         self._timer = self.after(50, self._update)
     def _setTime(self, elapsed):
@@ -37,18 +42,18 @@ class Timer(Frame):
             return alarm
     def Start(self):
         if not self._running:
-            self._start = time.time() - self._elapsedtime
+            self._start = time.time()
             self._update()
             self._running = 1
     def Stop(self):
         if self._running:
             self.after_cancel(self._timer)
-            self._elapsedtime = time.time() - self._start
+            self._elapsedtime = self.testing_time - (time.time() - self._start)
             self._setTime(self._elapsedtime)
             self._running = 0
     def Reset(self):
         self._start = time.time()
-        self._elapsedtime = 0.0
+        self._elapsedtime = test_time
         self._setTime(self._elapsedtime)
 def main():
     root = Tk()
