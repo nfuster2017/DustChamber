@@ -96,10 +96,12 @@ class Timer(Frame):
             GPIO.output(fan2_pos, 1)
             GPIO.output(fan3_pos, 0)
             time.sleep(1)
-        sequence1()
-        sequence2()
-        sequence3()
-        sequence4()
+        def loop_fan():
+            while self._running==1:
+                sequence1()
+                sequence2()
+                sequence3()
+                sequence4()
 
 
 
