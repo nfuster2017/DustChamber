@@ -12,17 +12,22 @@ import RPi.GPIO as GPIO
 # defining some global variables, as well as initialization
 global root,F1OFF,F1ON
 
+global settings,first,second,third,fourth
+first=5
+second=5
+third=5
+fourth=5
 
 root= tk.Tk()
 global label
 label = tk.Label(text="")
 global tot, fan1, fan2, fan3,light,vacuum, alarm,tot_pos,vacuum_pos
 light_pos= 35
-fan1_pos= 36
-fan2_pos = 37
-fan3_pos = 38
-tot_pos=20
-vacuum_pos=21
+fan1_pos= 40
+fan2_pos = 38
+fan3_pos = 36
+tot_pos=32
+vacuum_pos=37
 fan1=False
 fan2=False
 fan3=False
@@ -53,7 +58,7 @@ import time
 alarm= False
 class Timer(Frame):
 
-    global test_time,_start
+    global test_time,_start,seq_1,seq_2,seq_3
 
     def __init__(self, parent=None, **kw):
 
@@ -71,18 +76,31 @@ class Timer(Frame):
         GPIO.setup(fan1_pos, GPIO.OUT)
         GPIO.setup(fan2_pos, GPIO.OUT)
         GPIO.setup(fan3_pos, GPIO.OUT)
-        '''GPIO.output(fan1_pos, 1)
-        time.sleep(F1ON)
-        GPIO.output(fan1_pos, 0)
-        time.sleep(F1OFF)
-        GPIO.output(fan2_pos, 1)
-        time.sleep(F1OFF)
-        GPIO.output(fan2_pos, 0)
-        time.sleep(F1OFF)
-        GPIO.output(fan3_pos, 0)
-        time.sleep(F1OFF)
-        GPIO.output(fan3_pos, 1)
-        time.sleep(F1OFF)'''
+        def sequence1():
+            GPIO.output(fan1_pos, 1)
+            GPIO.output(fan2_pos, 0)
+            GPIO.output(fan3_pos, 0)
+            time.sleep(1)
+        def sequence2():
+            GPIO.output(fan1_pos, 0)
+            GPIO.output(fan2_pos, 1)
+            GPIO.output(fan3_pos, 0)
+            time.sleep(1)
+        def sequence3():
+            GPIO.output(fan1_pos, 0)
+            GPIO.output(fan2_pos, 0)
+            GPIO.output(fan3_pos, 1)
+            time.sleep(1)
+        def sequence4():
+            GPIO.output(fan1_pos, 1)
+            GPIO.output(fan2_pos, 1)
+            GPIO.output(fan3_pos, 0)
+            time.sleep(1)
+        sequence1()
+        sequence2()
+        sequence3()
+        sequence4()
+
 
 
 
@@ -187,7 +205,7 @@ class Timer(Frame):
     submen = Menu(menu)
     menu.add_cascade(label='settings', menu=submen)
     submen.add_command(label='Fan Durations', command=fansettings.fan_settings)'''
-global f1Off,f1ON,f2OFF,f2ON,f3ON,f3OFF
+global f1Off,f1ON,f2OFF,f2ON,f3ON,f3OFF,Fan1_btn,Fan2_btn,Fan3_btn
 f1ON=(5*60)
 f1OFF=(5*60)
 f2ON=(5*60)
@@ -197,63 +215,87 @@ f3OFF=(5*60)
 
 
 
+
 class fansettings(Frame):
+
     def __init__(self, parent=None, **kw):
         self.testing_time = 0
         Frame.__init__(self, parent, kw)
 
     def fan_settings(event=None):
-        settings=tk.Tk()
+        settings = tk.Tk()
+        def fan_cycling():
+
+            def first_round():
+                first=seq_1.get()
+                return first
+            def second_round():
+                second=seq_2.get()
+                return second
+            def third_round():
+                third=seq_3.get()
+                return third
+            def fourth_round():
+                fourth=seq_3.get()
+                return fourth
+            first_round()
+            second_round()
+            third_round()
+            fourth_round()
+
 
         def toggle(tog=[0]):
-            '''
-            a list default argument has a fixed address
-            '''
             tog[0] = not tog[0]
             if tog[0]:
-                t_btn.config(text='ON')
-                GPIO.output(tot_pos, 1)
+                Fan1_btn.config(text='ON')
+                GPIO.output(fan1_pos, 1)
 
 
             else:
-                t_btn.config(text='OFF')
-                GPIO.output(tot_pos, 0)
+                Fan1_btn.config(text='OFF')
+                GPIO.output(fan1_pos, 0)
 
-        t_btn = tk.Button(settings,text="OFF",  command=toggle)
-        t_btn.pack(side=LEFT)
-        tk.Spinbox(settings, from_=0, to=60, increment=1).pack(side=TOP)
-        tk.Spinbox(settings, from_=0, to=60, increment=1).pack(side=TOP)
-        tk.Spinbox(settings, from_=0, to=60, increment=1).pack(side=TOP)
+        def toggle2(tog=[0]):
+            tog[0] = not tog[0]
+            if tog[0]:
+                Fan2_btn.config(text='ON')
+                GPIO.output(fan2_pos, 1)
+            else:
+                Fan2_btn.config(text='OFF')
+                GPIO.output(fan2_pos, 0)
+        def toggle3(tog=[0]):
+            tog[0] = not tog[0]
+            if tog[0]:
+                Fan3_btn.config(text='ON')
+                GPIO.output(fan3_pos, 1)
+            else:
+                Fan3_btn.config(text='OFF')
+                GPIO.output(fan3_pos, 0)
+
+        Fan1_btn = tk.Button(settings,text="OFF",width=5,height=2, command=toggle)
+        Fan1_btn.pack(side=LEFT)
+
+        Fan2_btn = tk.Button(settings,text="OFF",width=5,height=2, command=toggle2)
+        Fan2_btn.pack(side=LEFT)
+
+        Fan3_btn = tk.Button(settings,text="OFF",width=5,height=2, command=toggle3)
+        Fan3_btn.pack(side=LEFT)
+
+        seq_1=tk.Spinbox(settings, from_=0, to=60, increment=1)
+        seq_1.pack(side=TOP)
+        seq_2=tk.Spinbox(settings, from_=0, to=60, increment=1)
+        seq_2.pack(side=TOP)
+        seq_3=tk.Spinbox(settings, from_=0, to=60, increment=1)
+        seq_3.pack(side=TOP)
+        seq_4=tk.Spinbox(settings, from_=0, to=60, increment=1)
+        seq_4.pack(side=TOP)
 
 
-        '''Label(settings, text='Fan 1 ON For:').pack()
-        f1ON = tk.Spinbox(root,from_=0,to=60,increment=1)
-        f1ON.pack()
-        Label(settings, text='Fan 1 OFF For:').pack()
-        f1OFF =Entry(settings)
-        f1OFF.pack()
-        Label(settings, text='Fan 2 ON For:').pack()
-
-        f2ON =Entry(settings)
-        f2ON.pack()
-        Label(settings, text='Fan 2 OFF For:').pack()
-
-        f2OFF =Entry(settings)
-        f2OFF.pack()
-        Label(settings, text='Fan 3 ON For:').pack()
-
-        f3ON =Entry(settings)
-        f3ON.pack()
-        Label(settings, text='Fan 3 OFF For:').pack()
-
-        f3OFF =Entry(settings)
-        f3OFF.pack()
-'''
         def set_durations():
             print('COODER ')
 
 
-        Button(settings, text='Set Durations', command=set_durations).pack()
+        Button(settings, text='Set Durations', command=fan_cycling).pack()
 
 
     def fans_on(self):
@@ -281,8 +323,6 @@ warmup_button.pack()
 warmup_button.bind('<Double-Button-1>', Timer.warm_ups)
 
 
-
-
 hr_label = tk.Label(text="Hours:")
 hr_label.pack(side=LEFT)
 hrs_entry=tk.Spinbox(root,from_=0,to=8,increment=1)
@@ -305,7 +345,6 @@ sw = Timer(root)
 sw.pack(side=TOP)
 
 
-tk.Spinbox(root,from_=0,to=60,increment=1).pack()
 btext='Start/Reset'
 star_reset=Button(root, text=btext, command=sw.Start)
 star_reset.pack(side=LEFT)
