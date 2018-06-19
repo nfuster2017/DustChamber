@@ -41,10 +41,10 @@ alarm= False
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(light, GPIO.OUT)
-GPIO.setup(fan1, GPIO.OUT)
-GPIO.setup(fan2, GPIO.OUT)
-GPIO.setup(fan3, GPIO.OUT)
+GPIO.setup(light_pos, GPIO.OUT)
+GPIO.setup(fan1_pos, GPIO.OUT)
+GPIO.setup(fan2_pos, GPIO.OUT)
+GPIO.setup(fan3_pos, GPIO.OUT)
 # this function warms up the totalizer and starts the vacuum
 
 
@@ -143,7 +143,7 @@ class Timer(Frame):
     def Start(self):
         self.pack_f()
         self.testing_time = Timer.get_intentry
-        Fan_Stuff.loop_fan
+        Fan_Stuff.loop_fan()
         self._start = time.time()
         self._update()
         self._running = 1
@@ -172,11 +172,7 @@ class Timer(Frame):
         self._setTime(self._elapsedtime)
         self._update()
 
-    '''menu = Menu(root)
-    root.config(menu=menu)
-    submen = Menu(menu)
-    menu.add_cascade(label='settings', menu=submen)
-    submen.add_command(label='Fan Durations', command=fansettings.fan_settings)'''
+ 
 global f1Off,f1ON,f2OFF,f2ON,f3ON,f3OFF,Fan1_btn,Fan2_btn,Fan3_btn
 f1ON=(5*60)
 f1OFF=(5*60)
