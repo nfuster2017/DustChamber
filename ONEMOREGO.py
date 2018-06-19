@@ -80,28 +80,43 @@ class Timer(Frame):
             GPIO.output(fan1_pos, 1)
             GPIO.output(fan2_pos, 0)
             GPIO.output(fan3_pos, 0)
-            time.sleep(1)
+            self._update()
+            print(fourth)
+
         def sequence2():
             GPIO.output(fan1_pos, 0)
             GPIO.output(fan2_pos, 1)
             GPIO.output(fan3_pos, 0)
-            time.sleep(1)
+            self._update()
+            #time.sleep(1)
         def sequence3():
             GPIO.output(fan1_pos, 0)
             GPIO.output(fan2_pos, 0)
             GPIO.output(fan3_pos, 1)
-            time.sleep(1)
+            self._update()
+            #time.sleep(1)
         def sequence4():
             GPIO.output(fan1_pos, 1)
             GPIO.output(fan2_pos, 1)
             GPIO.output(fan3_pos, 0)
-            time.sleep(1)
+            self._update()
+            #time.sleep(1)
         def loop_fan():
-            while self._running==1:
-                sequence1()
-                sequence2()
-                sequence3()
-                sequence4()
+            while self._elapsedtime!= 0 or self._running !=0:
+                seq1=int(self._elapsedtime-first)
+                while seq1!=int(self._elapsedtime):
+                    sequence1()
+                seq2=int(self._elapsedtime-second)
+                while seq2!=int(self._elapsedtime):
+                    sequence2()
+                seq3=int(self._elapsedtime-third)
+                while seq3!=int(self._elapsedtime):
+                    sequence3()
+                seq4 = int(self._elapsedtime - fourth)
+                while seq4 != int(self._elapsedtime):
+                    sequence4()
+
+        loop_fan()
 
 
 
@@ -173,7 +188,6 @@ class Timer(Frame):
         self.pack_f()
         self.testing_time = Timer.get_intentry
         self.Fan_sequence()
-
         self._start = time.time()
         self._update()
         self._running = 1
@@ -358,7 +372,6 @@ pause_but=Button(root, text='Pause', command=sw.Stop)
 pause_but.pack(side=LEFT)
 
 Button(root, text='Quit', command=root.quit).pack(side=RIGHT)
-
 if alarm== True:
     label = tk.Label(text="ALARM ALARM").pack()
 root.mainloop()
