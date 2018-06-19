@@ -80,6 +80,7 @@ class Timer(Frame):
             GPIO.output(fan1_pos, 1)
             GPIO.output(fan2_pos, 0)
             GPIO.output(fan3_pos, 0)
+            time.sleep(1)
             self._update()
             print(fourth)
 
@@ -87,20 +88,23 @@ class Timer(Frame):
             GPIO.output(fan1_pos, 0)
             GPIO.output(fan2_pos, 1)
             GPIO.output(fan3_pos, 0)
+            time.sleep(1)
             self._update()
-            #time.sleep(1)
+
         def sequence3():
             GPIO.output(fan1_pos, 0)
             GPIO.output(fan2_pos, 0)
             GPIO.output(fan3_pos, 1)
+            time.sleep(1)
             self._update()
-            #time.sleep(1)
+
         def sequence4():
             GPIO.output(fan1_pos, 1)
             GPIO.output(fan2_pos, 1)
             GPIO.output(fan3_pos, 0)
+            time.sleep(1)
             self._update()
-            #time.sleep(1)
+
         def loop_fan():
             while self._elapsedtime!= 0 or self._running !=0:
                 seq1=int(self._elapsedtime-first)
