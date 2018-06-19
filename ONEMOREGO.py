@@ -72,55 +72,7 @@ class Timer(Frame):
         self.timestr = StringVar()
         self.makeWidgets()
 
-    def Fan_sequence(self):
-        GPIO.setup(fan1_pos, GPIO.OUT)
-        GPIO.setup(fan2_pos, GPIO.OUT)
-        GPIO.setup(fan3_pos, GPIO.OUT)
-        def sequence1():
-            GPIO.output(fan1_pos, 1)
-            GPIO.output(fan2_pos, 0)
-            GPIO.output(fan3_pos, 0)
-            time.sleep(1)
-            self._update()
-            print(fourth)
 
-        def sequence2():
-            GPIO.output(fan1_pos, 0)
-            GPIO.output(fan2_pos, 1)
-            GPIO.output(fan3_pos, 0)
-            time.sleep(1)
-            self._update()
-
-        def sequence3():
-            GPIO.output(fan1_pos, 0)
-            GPIO.output(fan2_pos, 0)
-            GPIO.output(fan3_pos, 1)
-            time.sleep(1)
-            self._update()
-
-        def sequence4():
-            GPIO.output(fan1_pos, 1)
-            GPIO.output(fan2_pos, 1)
-            GPIO.output(fan3_pos, 0)
-            time.sleep(1)
-            self._update()
-
-        def loop_fan():
-            while self._elapsedtime!= 0 or self._running !=0:
-                seq1=int(self._elapsedtime-first)
-                while seq1!=int(self._elapsedtime):
-                    sequence1()
-                seq2=int(self._elapsedtime-second)
-                while seq2!=int(self._elapsedtime):
-                    sequence2()
-                seq3=int(self._elapsedtime-third)
-                while seq3!=int(self._elapsedtime):
-                    sequence3()
-                seq4 = int(self._elapsedtime - fourth)
-                while seq4 != int(self._elapsedtime):
-                    sequence4()
-
-        loop_fan()
 
 
 
@@ -191,7 +143,7 @@ class Timer(Frame):
     def Start(self):
         self.pack_f()
         self.testing_time = Timer.get_intentry
-        self.Fan_sequence()
+        Fan_Stuff.loop_fan
         self._start = time.time()
         self._update()
         self._running = 1
@@ -310,11 +262,6 @@ class fansettings(Frame):
         seq_4=tk.Spinbox(settings, from_=0, to=60, increment=1)
         seq_4.pack(side=TOP)
 
-
-        def set_durations():
-            print('COODER ')
-
-
         Button(settings, text='Set Durations', command=fan_cycling).pack()
 
 
@@ -329,15 +276,59 @@ class fansettings(Frame):
         GPIO.setup(fan3_pos, GPIO.OUT)
         GPIO.output(fan3_pos, 1)
 
-    def fan_cycle(self):
-        self.Fans_on()
-        time.sleep(10)
     menu = Menu(root)
     root.config(menu=menu)
     submen = Menu(menu)
     menu.add_cascade(label='settings', menu=submen)
     submen.add_command(label='Fan Durations',command=fan_settings)
 
+class Fan_Stuff():
+    def Fan_sequence(self):
+        GPIO.setup(fan1_pos, GPIO.OUT)
+        GPIO.setup(fan2_pos, GPIO.OUT)
+        GPIO.setup(fan3_pos, GPIO.OUT)
+
+    def sequence1(self):
+        GPIO.output(fan1_pos, 1)
+        GPIO.output(fan2_pos, 0)
+        GPIO.output(fan3_pos, 0)
+        time.sleep(1)
+        print(fourth)
+
+    def sequence2(self):
+        GPIO.output(fan1_pos, 0)
+        GPIO.output(fan2_pos, 1)
+        GPIO.output(fan3_pos, 0)
+        time.sleep(1)
+
+    def sequence3(self):
+        GPIO.output(fan1_pos, 0)
+        GPIO.output(fan2_pos, 0)
+        GPIO.output(fan3_pos, 1)
+        time.sleep(1)
+
+    def sequence4(self):
+        GPIO.output(fan1_pos, 1)
+        GPIO.output(fan2_pos, 1)
+        GPIO.output(fan3_pos, 0)
+        time.sleep(1)
+
+    def loop_fan(self):
+        while Timer._elapsedtime != 0 or Timer._running != 0:
+            seq1 = int(Timer._elapsedtime - first)
+            if seq1 != int(Timer._elapsedtime):
+                self.sequence1()
+            seq2 = int(Timer._elapsedtime - second)
+            if seq2 != int(Timer._elapsedtime):
+                self.sequence2()
+            seq3 = int(Timer._elapsedtime - third)
+            if seq3 != int(Timer._elapsedtime):
+                self.sequence3()
+            seq4 = int(Timer._elapsedtime - fourth)
+            if seq4 != int(Timer._elapsedtime):
+                self.sequence4()
+
+        self.loop_fan()
 warmup_button=Button(root, text='Commence Warm up')
 warmup_button.pack()
 warmup_button.bind('<Double-Button-1>', Timer.warm_ups)
