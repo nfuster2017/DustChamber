@@ -8,7 +8,8 @@ import RPi.GPIO as GPIO
 
 # defining some global variables, as well as initialization
 global root, F1OFF, F1ON
-global settings, first, second, third, fourth
+global settings, first, second, third, fourth, count
+count = 1
 first = 5
 second = 5
 third = 5
@@ -32,15 +33,6 @@ light = False
 tot = False
 vacuum = False
 alarm = False
-# some more global variable declaration
-
-global f1Off, f1ON, f2OFF, f2ON, f3ON, f3OFF, Fan1_btn, Fan2_btn, Fan3_btn
-f1ON = (5 * 60)
-f1OFF = (5 * 60)
-f2ON = (5 * 60)
-f2OFF = (5 * 60)
-f3ON = (5 * 60)
-f3OFF = (5 * 60)
 
 # v=int()
 # GPIO configuration
@@ -139,9 +131,9 @@ class Timer(Frame):
         self._running = 1
         self.pack_f()
         self.testing_time = Timer.get_intentry
-        Fan_Stuff.loop_fan
         self._start = time.time()
         self._update()
+        print('Alvin swims like a seabass')
 
     # fucntions used for pause button, also tracks time was paused for to feed the elapsed time
     def Stop(self):
@@ -169,7 +161,19 @@ class Timer(Frame):
         self._setTime(self._elapsedtime)
         self._update()
 
+    def get_elap(self):
+        return self._elapsedtime
 
+
+# some more global variable declaration
+
+global f1Off, f1ON, f2OFF, f2ON, f3ON, f3OFF, Fan1_btn, Fan2_btn, Fan3_btn
+f1ON = (5 * 60)
+f1OFF = (5 * 60)
+f2ON = (5 * 60)
+f2OFF = (5 * 60)
+f3ON = (5 * 60)
+f3OFF = (5 * 60)
 
 
 # this is the mnue for the settings
@@ -276,49 +280,78 @@ class Fan_Stuff():
         GPIO.setup(fan3_pos, GPIO.OUT)
 
     # different fan outputs
+
+    # We cannot constantly be checking to see if the time condition has changed because program will bug, How do we go about changing the sequence when the time has changed
     def sequence1(self):
-        GPIO.output(fan1_pos, 1)
-        GPIO.output(fan2_pos, 0)
-        GPIO.output(fan3_pos, 0)
-        time.sleep(1)
+        f1 = GPIO.output(fan1_pos, 1)
+        f2 = GPIO.output(fan2_pos, 0)
+        f3 = GPIO.output(fan3_pos, 0)
         print(fourth)
+        return f1
 
     def sequence2(self):
-        GPIO.output(fan1_pos, 0)
-        GPIO.output(fan2_pos, 1)
-        GPIO.output(fan3_pos, 0)
-        time.sleep(1)
+        f1 = GPIO.output(fan1_pos, 0)
+        f2 = GPIO.output(fan2_pos, 1)
+        f3 = GPIO.output(fan3_pos, 0)
 
     def sequence3(self):
-        GPIO.output(fan1_pos, 0)
-        GPIO.output(fan2_pos, 0)
-        GPIO.output(fan3_pos, 1)
-        time.sleep(1)
+        f1 = GPIO.output(fan1_pos, 0)
+        f2 = GPIO.output(fan2_pos, 0)
+        f3 = GPIO.output(fan3_pos, 1)
 
     def sequence4(self):
-        GPIO.output(fan1_pos, 1)
-        GPIO.output(fan2_pos, 1)
-        GPIO.output(fan3_pos, 0)
-        time.sleep(1)
+        f1 = GPIO.output(fan1_pos, 1)
+        f2 = GPIO.output(fan2_pos, 1)
+        f3 = GPIO.output(fan3_pos, 0)
 
+    # fanny_sequences=[sequence1(),sequence2(),sequence3(),sequence4()]
     # looping through the sequences
     def loop_fan(self):
-        while Timer._elapsedtime != 0 or Timer._running != 0:
-            seq1 = int(Timer._elapsedtime - first)
-            while seq1 != int(Timer._elapsedtime):
-                self.sequence1()
-            seq2 = int(Timer._elapsedtime - second)
-            while seq2 != int(Timer._elapsedtime):
+        # xw.get_elap
+        while sw.get_elap() > 0:
+            # if sw.testing_time-first<=sw.get_elap():
+            count = 1
+            t1 = sw.get_elap() > sw.testing_time - first
+            if sw.get_elap() > sw.testing_time - first:
+                if f1 == GPIO.output(fan1_pos, 1):
+                    print('seq1')
+                    break
+                else:
+                    self.sequence1()
+                    print('seq2')
+                    break
+            if t1 > sw.get_elap() > sw.testing_time - (count * (first + second)):
                 self.sequence2()
-            seq3 = int(Timer._elapsedtime - third)
-            while seq3 != int(Timer._elapsedtime):
+                print('seq2')
+            t2 = sw.testing_time - (count * (first + second))
+            if t2 > sw.get_elap() > sw.testing_time - (count * (first + second + third)):
                 self.sequence3()
-            seq4 = int(Timer._elapsedtime - fourth)
-            while seq4 != int(Timer._elapsedtime):
+                print('seq3')
+            t3 = sw.testing_time - (count * (first + second + third))
+            if t3 > sw.get_elap() > sw.testing_time - (count * (first + second + third + fourth)):
                 self.sequence4()
+                print('seq4')
+            count += 1
+
+            print('Mr Nicolas')
+        '''       while Timer._elapsedtime != 0 or Timer._running != 0:
+           seq1 = int(Timer._elapsedtime - first)
+           while seq1 != int(Timer._elapsedtime):
+               self.sequence1()
+           seq2 = int(Timer._elapsedtime - second)
+           while seq2 != int(Timer._elapsedtime):
+               self.sequence2()
+           seq3 = int(Timer._elapsedtime - third)
+           while seq3 != int(Timer._elapsedtime):
+               self.sequence3()
+           seq4 = int(Timer._elapsedtime - fourth)
+           while seq4 != int(Timer._elapsedtime):
+               self.sequence4()
+       print('Hola ')'''
 
 
 # tkinter buttons for warm up and entry boxes
+xw = Fan_Stuff()
 
 warmup_button = Button(root, text='Commence Warm up')
 warmup_button.pack()
@@ -343,7 +376,7 @@ sw.pack(side=TOP)
 btext = 'Start/Reset'
 star_reset = Button(root, text=btext, command=sw.Start)
 star_reset.pack(side=LEFT)
-
+Button(root, text='Fans Running', command=xw.loop_fan).pack()
 pbutt = Button(root, text='Play', command=sw.Reset)
 pbutt.pack(side=LEFT)
 
@@ -353,6 +386,6 @@ pause_but.pack(side=LEFT)
 Button(root, text='Quit', command=root.quit).pack(side=RIGHT)
 if alarm == True:
     label = tk.Label(text="ALARM ALARM").pack()
-GPIO.cleanup()
-root.mainloop()
 
+root.mainloop()
+GPIO.cleanup()
