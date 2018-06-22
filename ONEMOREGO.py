@@ -5,7 +5,7 @@ from tkinter import *
 from tkinter import ttk
 import time
 import RPi.GPIO as GPIO
-
+import threading as TR
 # defining some global variables, as well as initialization
 global root, F1OFF, F1ON
 global settings, first, second, third, fourth, count
@@ -306,20 +306,26 @@ class Fan_Stuff():
 
     # fanny_sequences=[sequence1(),sequence2(),sequence3(),sequence4()]
     # looping through the sequences
-    def loop_fan(self):
+    def loop_fan(event=None):
         # xw.get_elap
-        while sw.get_elap() > 0:
+        while True:# sw.get_elap() > 0:
+            time.sleep(2)
+            print('hey')
+            Fan_Stuff.sequence1
+            time.sleep(2)
+            Fan_Stuff.sequence2
+            print('there')
             # if sw.testing_time-first<=sw.get_elap():
-            count = 1
-            t1 = sw.get_elap() > sw.testing_time - first
-            if sw.get_elap() > sw.testing_time - first:
-                if f1 == GPIO.output(fan1_pos, 1):
-                    print('seq1')
-                    break
-                else:
-                    self.sequence1()
-                    print('seq2')
-                    break
+            #count = 1
+            #t1 = sw.get_elap() > sw.testing_time - first
+            #if sw.get_elap() > sw.testing_time - first:
+                #if f1 == GPIO.output(fan1_pos, 1):
+                 #   print('seq1')
+                  #  break
+              #  else:
+             #       self.sequence1()
+            #        print('seq2')
+            '''break
             if t1 > sw.get_elap() > sw.testing_time - (count * (first + second)):
                 self.sequence2()
                 print('seq2')
@@ -333,7 +339,7 @@ class Fan_Stuff():
                 print('seq4')
             count += 1
 
-            print('Mr Nicolas')
+            print('Mr Nicolas')'''
         '''       while Timer._elapsedtime != 0 or Timer._running != 0:
            seq1 = int(Timer._elapsedtime - first)
            while seq1 != int(Timer._elapsedtime):
@@ -376,7 +382,9 @@ sw.pack(side=TOP)
 btext = 'Start/Reset'
 star_reset = Button(root, text=btext, command=sw.Start)
 star_reset.pack(side=LEFT)
-Button(root, text='Fans Running', command=xw.loop_fan).pack()
+x=TR.Thread(target=Fan_Stuff.loop_fan)
+x.start()
+Button(root, text='Fans Running', command=x).pack()
 pbutt = Button(root, text='Play', command=sw.Reset)
 pbutt.pack(side=LEFT)
 
@@ -386,6 +394,6 @@ pause_but.pack(side=LEFT)
 Button(root, text='Quit', command=root.quit).pack(side=RIGHT)
 if alarm == True:
     label = tk.Label(text="ALARM ALARM").pack()
-
+    #Attempting to thread
 root.mainloop()
 GPIO.cleanup()
