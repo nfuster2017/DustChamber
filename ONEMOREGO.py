@@ -383,8 +383,7 @@ btext = 'Start/Reset'
 star_reset = Button(root, text=btext, command=sw.Start)
 star_reset.pack(side=LEFT)
 x=TR.Thread(target=Fan_Stuff.loop_fan)
-x.start()
-Button(root, text='Fans Running', command=x).pack()
+Button(root, text='Fans Running', command=x.start).pack()
 pbutt = Button(root, text='Play', command=sw.Reset)
 pbutt.pack(side=LEFT)
 
